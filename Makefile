@@ -1,0 +1,18 @@
+PY ?= $(shell [ -x .venv/bin/python ] && echo .venv/bin/python || echo python)
+
+up:
+	docker compose up -d --build
+
+down:
+	docker compose down
+
+logs:
+	docker compose logs -f --tail=100
+
+test:
+	$(PY) -m pytest -q
+
+lint:
+	$(PY) -m ruff check .
+
+.PHONY: up down logs test lint
