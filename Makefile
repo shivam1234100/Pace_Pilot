@@ -12,7 +12,10 @@ logs:
 test:
 	$(PY) -m pytest -q
 
+test-integration:
+	$(PY) -m pytest -q -m integration
+
 lint:
 	$(PY) -m ruff check .
 
-.PHONY: up down logs test lint
+.PHONY: up down logs test test-integration lint

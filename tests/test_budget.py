@@ -71,9 +71,7 @@ async def test_concurrent_admits_never_overspend(r: fakeredis.FakeAsyncRedis) ->
     budget = 10_000
     g = BudgetGuard(r, mode="atomic")
     await g.set_budget(CID, budget)
-    decisions = await asyncio.gather(
-        *(g.admit(CID, f"e{i}", 100, day=DAY) for i in range(500))
-    )
+    decisions = await asyncio.gather(*(g.admit(CID, f"e{i}", 100, day=DAY) for i in range(500)))
     approved = sum(d.status == "approved" for d in decisions)
     spent = await g.spent(CID, day=DAY)
     assert spent <= budget
