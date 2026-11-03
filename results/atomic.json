@@ -1,0 +1,49 @@
+{
+  "counter_mode": "atomic",
+  "settings": {
+    "base_url": "http://localhost:8000",
+    "campaigns": 200,
+    "budget_cents": 50000,
+    "events": 60000,
+    "batch_size": 10,
+    "concurrency": 100,
+    "dup_rate": 0.05,
+    "amount_min": 50,
+    "amount_max": 500,
+    "seed": 42,
+    "worker_wait_s": 5.0
+  },
+  "events_sent": 60000,
+  "requests": 6000,
+  "request_errors": 0,
+  "send_seconds": 25.02,
+  "throughput_events_per_s": 2397.7,
+  "latency_ms": {
+    "p50": 235.4,
+    "p95": 1371.0,
+    "p99": 2674.5
+  },
+  "results": {
+    "approved": 36496,
+    "rejected": 20387,
+    "duplicate": 3117,
+    "unknown": 0
+  },
+  "demand_to_budget_ratio": 1.65,
+  "total_budget_cents": 10000000,
+  "total_spent_cents": 9995352,
+  "overspend": {
+    "campaigns_over_budget": 0,
+    "total_overspend_cents": 0,
+    "overspend_pct_of_total_budget": 0.0
+  },
+  "ledger_mismatch_campaigns": 0,
+  "pauses": {
+    "campaigns_paused": 200,
+    "pause_lag_p50_ms": 291.0,
+    "pause_lag_p95_ms": 609.6,
+    "pause_lag_max_ms": 949
+  },
+  "client_host": "Darwin arm64",
+  "started_at": "2026-11-03T10:26:54.817751+00:00"
+}
