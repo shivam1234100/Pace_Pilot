@@ -91,3 +91,30 @@ async def pause_stats(pool: asyncpg.Pool, since: datetime) -> dict[str, Any]:
         since,
     )
     return dict(row)
+
+
+async def mark_paused(pool: asyncpg.Pool, cid: int, breach_ms: int, lag_ms: int) -> None:
+    await pool.execute(
+        """UPDATE campaigns
+           SET status = 'paused', breach_at = to_timestamp($2 / 1000.0),
+               paused_at = now(), pause_lag_ms = $3
+           WHERE id = $1""",
+        cid,
+        breach_ms,
+        lag_ms,
+    )
+
+
+async def pacing_candidates(pool: asyncpg.Pool) -> list[asyncpg.Record]:
+    return await pool.fetch(
+        """SELECT id, daily_budget_cents, status FROM campaigns
+           WHERE status IN ('active', 'overpacing')"""
+    )
+
+
+async def set_status_if(pool: asyncpg.Pool, cid: int, expected: str, new: str) -> bool:
+    """Compare-and-set so the pacing loop never overwrites a pause."""
+    result = await pool.execute(
+        "UPDATE campaigns SET status = $3 WHERE id = $1 AND status = $2", cid, expected, new
+    )
+    return result == "UPDATE 1"

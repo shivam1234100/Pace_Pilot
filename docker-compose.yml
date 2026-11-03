@@ -41,5 +41,21 @@ services:
     ports:
       - "8000:8000"
 
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    environment:
+      DATABASE_URL: postgresql://pace:pace@db:5432/pace
+      REDIS_URL: redis://redis:6379/0
+      MOCK_FAILURE_RATE: ${MOCK_FAILURE_RATE:-0.1}
+      PACING_INTERVAL_S: ${PACING_INTERVAL_S:-30}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "9101:9101"
+
 volumes:
   pgdata:
